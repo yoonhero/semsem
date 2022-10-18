@@ -2,6 +2,8 @@ from PIL import Image
 from regex import R
 import torch
 from torch import autocast
+import zlib
+import bz2
 
 # Convert many images to one grid image
 def makegrid(imgs, rows, cols):
@@ -27,3 +29,20 @@ def animalism(pipe, image_dir, prompt, strength, guidance_scale, device=get_devi
         image = pipe(prompt=prompt, init_image=init_img, strength=strength, guidance_scale=guidance_scale, generator=generator).images[0]
 
     return image
+
+
+
+def decompress(input_file, output_file):
+    with bz2.open(input_file, 'rb') as f:
+        indata = f.read()
+
+
+    outdata = zlib.decompressobj().decompress(indata)
+
+    print("askdjf;aklsdfj;a")
+
+    outFile = open(output_file, "wb")
+
+    outFile.write(outdata)
+
+    outFile.close()
