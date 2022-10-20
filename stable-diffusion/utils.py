@@ -39,8 +39,6 @@ def decompress(input_file, output_file):
 
     outdata = zlib.decompressobj().decompress(indata)
 
-    print("askdjf;aklsdfj;a")
-
     outFile = open(output_file, "wb")
 
     outFile.write(outdata)

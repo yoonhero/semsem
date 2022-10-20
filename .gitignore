@@ -161,3 +161,8 @@ cython_debug/
 
 
 /stable-diffusion/datasets
+
+/stable-diffusion/test_result
+/stable-diffusion/test
+
+/data

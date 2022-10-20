@@ -40,11 +40,18 @@ class FaceDetector():
         
 
 if __name__ == "__main__":
-    face_detector = FaceDetector(download=True)
+    face_detector = FaceDetector()
 
-    face = face_detector.predict("./test.JPG", 108)
+    import glob
+    
+    files = glob.glob("./test/*.jpeg")
 
-    face.save("./result.jpg", "JPEG")
+    print(files)
+
+    for i, file in enumerate(files):
+        face = face_detector.predict(file, 54)
+
+        face.save(f"./test_result/result_{i}.jpg", "JPEG")
 
 
         
