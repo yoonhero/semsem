@@ -61,7 +61,7 @@ class Crawling:
                 image.click()
                 time.sleep(self.IMAGE_PAUSE_TIME)
 
-                file_name = str(self.count) + ".jpg"
+                file_name = str(self.count) + ".png"
 
                 completeFileName = os.path.join(self.folderName, file_name)
                 print(completeFileName)
