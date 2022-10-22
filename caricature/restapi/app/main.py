@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, send_file
-from flask.wrappers import json
 from io import BytesIO
 from app.torch_utils import img2anime
 from PIL import Image
