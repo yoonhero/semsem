@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Webcam from 'react-webcam'
-import styles from '../styles/Home.module.css'
 
 
 
@@ -13,6 +13,7 @@ function getWindowSize() {
 
 
 export default function Home() {
+  const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [imageSrc, setImageSrc] = useState("")
   const [windowSize, setWindowSize] = useState("")
@@ -41,17 +42,33 @@ export default function Home() {
     console.log(windowSize)
   }, [windowSize])
 
+  
+  // TODO
+  const createCaricature = async (img) => {
+    return
+  }
+
+
+
   useEffect(() => {
-    console.log(imageSrc)    
-  }, [imageSrc])
+    // TODO: Create Image 
+    if (imageSrc != "") {
+      setLoading(true)
+      const createdCaricature = createCaricature(imageSrc)
+      setLoading(false)
+    }
+  }, [imageSrc, router])
+
+  
+  const clear = () => setImageSrc("")
+
 
   return (
     <>
       {loading ? <div>Loading...</div> : (
         <div>
-      
-      
-      {imageSrc == "" ? (<Webcam audio={false} mirrored={true} screenshotFormat="image/jpeg" width={windowSize.width} height={windowSize.height} videoConstraints={{facingMode:"user"}}>
+          {imageSrc == "" ?(
+      <Webcam audio={false} mirrored={true} screenshotFormat="image/jpeg" width={windowSize.width} height={windowSize.height} videoConstraints={{facingMode:"user"}}>
         {({getScreenshot} ) => (
           <button onClick={() => {
             const src = getScreenshot()
@@ -62,15 +79,15 @@ export default function Home() {
           </button>
         )}
       </Webcam> 
-      ): (
-      
-      <div>
-        <Image alt="Caricature" src={imageSrc} width={windowSize.width} height={windowSize.height}/>
-        <button onClick={() => setImageSrc("")}>ReTrY</button>
-      </div>
+) : (
+  <div>
+            <Image alt="Image" src={imageSrc} width={windowSize.width} height={windowSize.height} />
 
-      )} 
+            <button onClick={() => clear()}>Retry</button>
+        </div>
+)
       
+        }
     </div>
       )}
     
