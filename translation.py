@@ -5,8 +5,12 @@ class Translation():
         self.translator = Translator()
 
     def translate(self, text):
-        return self.translator.translate(text, dest="en").text
-        
+        text_type = self.translator.detect(text)
+
+        if text_type.lang == "ko":
+            return self.translator.translate(text, dest="en").text
+
+        return text
 
 if __name__ == "__main__":
     trans = Translation()

@@ -166,3 +166,5 @@ cython_debug/
 /stable-diffusion/test
 
 /data
+
+/korean-stable-diffusion/
