@@ -1,12 +1,25 @@
+import base64
+import json
+import os
 from flask import Flask, request, jsonify, send_file
 from io import BytesIO
 from torch_utils import img2anime
 from PIL import Image
-import smtplib
+from flask_cors import CORS, cross_origin
+import time
+from imgurpython import ImgurClient
+from auth import authenticate
+
+
 
 app = Flask(__name__)
+cors = CORS(app, resources={r'*': {'origins': '*'}})
+# app.config['CORS_HEADERS'] = 'Content-Type'
+# app.config["Access-Control-Allow-Origin"] = "*"
 
 ALLOWED_EXTENSIONS = {'png', "jpg", "jpeg"}
+
+# client = authenticate()
 
 
 def allowed_file(filename):
@@ -57,20 +70,79 @@ def image_frame(imgs):
         resized_img = resize_image_fit_frame(img)
         grid.paste(resized_img, box=(0, i*h))
 
-    background = Image.open("frame.png")
+    background = Image.open("romela_frame.png")
 
     grid.paste(background, (0, 0), background)
 
     return grid
-    
 
-def sendMail(me, you, msg):
-    smtp = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-    smtp.login(me, 'your password')
-    msg = MIMEText(msg)
-    msg['Subject'] = 'TEST'
-    smtp.sendmail(me, you, msg.as_string())
-    smtp.quit()
+
+def img_to_base64_str(img):
+    buffered = BytesIO()
+    img.save(buffered, format="PNG")
+    buffered.seek(0)
+    img_byte = buffered.getvalue()
+    img_str = "data:image/png;base64," + base64.b64encode(img_byte).decode()
+    return img_str
+
+
+@app.route("/api/predict", methods=["POST"])
+@cross_origin()
+def predict_for_web():
+    params = request.get_json()
+
+    images = params["images"]
+
+    results = []
+
+    for image in images:
+        image = image[image.find(",") + 1 :]
+        dec = base64.b64decode(image + "===")
+        image = Image.open(BytesIO(dec))
+
+        print("Loading success")
+
+        anime_img = img2anime(image)
+
+        print("processing success")
+
+        results.append(anime_img)   
+
+
+    result_img = image_frame(results)
+
+    timestamp = time.time()
+    file_name = f"{int(timestamp*100)}.png"
+
+    PATH = "./results"
+    if not os.path.exists(PATH):
+        os.makedirs(PATH)
+
+    filepath = os.path.join(PATH,file_name)
+
+
+    result_img.save(filepath)
+
+    # config = {
+    #         'album': None,
+    #         'name':  '인생네컷',
+    #         'title': f'{timestamp}!',
+    #         'description': 'on {0}'.format(time.time())
+    # }
+    # client.upload_from_path(filepath, config=config, anon=False)
+
+    bytes_img = img_to_base64_str(result_img)
+    result = {"output": bytes_img}
+
+
+    return jsonify({
+        "statusCode": 200,
+        "body": result,
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
+    })
 
 
 @app.route("/predict", methods=["POST"])
@@ -110,4 +182,4 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port='5001', debug=True)
+    app.run(host='0.0.0.0', port='5000', debug=True)
