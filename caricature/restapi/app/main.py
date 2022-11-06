@@ -3,13 +3,12 @@ import json
 import os
 from flask import Flask, request, jsonify, send_file
 from io import BytesIO
-from torch_utils import img2anime
 from PIL import Image
 from flask_cors import CORS, cross_origin
 import time
-from imgurpython import ImgurClient
-from auth import authenticate
 
+from torch_utils import img2anime
+from imgur_uploader import Uploader
 
 
 app = Flask(__name__)
@@ -20,6 +19,8 @@ cors = CORS(app, resources={r'*': {'origins': '*'}})
 ALLOWED_EXTENSIONS = {'png', "jpg", "jpeg"}
 
 # client = authenticate()
+
+imgur_uploader = Uploader()
 
 
 def allowed_file(filename):
@@ -44,10 +45,9 @@ def image_grid(imgs, rows, cols):
     return grid
 
 
-def resize_image_fit_frame(image):
+def resize_image_fit_frame(image, target_width):
     w, h = image.size
 
-    target_width = 618
     new_height = int(target_width / w * h)
 
     new_size = (target_width, new_height)
@@ -62,16 +62,18 @@ def resize_image_fit_frame(image):
 
 
 def image_frame(imgs):
-    w, h = (618, 365)
+    background = Image.open("./frame.png")
+    w, original_h = background.size
+    # w, h = (618, 365)
+    h = original_h / 4.7
 
-    grid = Image.new("RGB", size=(w, 1722))
+    grid = Image.new("RGB", size=(w, original_h))
 
     for i, img in enumerate(imgs):  
-        resized_img = resize_image_fit_frame(img)
-        grid.paste(resized_img, box=(0, i*h))
+        resized_img = resize_image_fit_frame(img, w)
+        grid.paste(resized_img, box=(0, int(i*h)))
 
-    background = Image.open("romela_frame.png")
-
+    
     grid.paste(background, (0, 0), background)
 
     return grid
@@ -92,6 +94,7 @@ def predict_for_web():
     params = request.get_json()
 
     images = params["images"]
+    frame = params["frame"]
 
     results = []
 
@@ -123,16 +126,14 @@ def predict_for_web():
 
     result_img.save(filepath)
 
-    # config = {
-    #         'album': None,
-    #         'name':  '인생네컷',
-    #         'title': f'{timestamp}!',
-    #         'description': 'on {0}'.format(time.time())
-    # }
-    # client.upload_from_path(filepath, config=config, anon=False)
+    uploaded_link = imgur_uploader.upload(filepath,  f"맬라네컷 {int(timestamp*100)}")    
+    qr_img = imgur_uploader.make_qr(uploaded_link)
 
     bytes_img = img_to_base64_str(result_img)
-    result = {"output": bytes_img}
+    bytes_qr = img_to_base64_str(qr_img)
+
+
+    result = {"output": bytes_img, "qr": bytes_qr}
 
 
     return jsonify({
