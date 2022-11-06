@@ -168,7 +168,7 @@ export default function Home() {
                                 ></button>
                             </div>
 
-                            <div className="fixed  bottom-10 right-10">
+                            <div className="fixed z-10  bottom-10 right-10">
                                 {/* <div className="bg-indigo-100 w-12 h-12 hover:bg-indigo-500 p-2 rounded-full">
                                     <Image
                                         src={'/frame-icon.png'}
@@ -195,18 +195,27 @@ export default function Home() {
                             {changeFrame && (
                                 <div className="fixed bottom-5">
                                     <div className="flex flex-row justify-center space-x-3 p-5 -ml-3">
-                                        {['/frame1.png', '/frame2.png'].map(
-                                            (src, idx) => (
-                                                <ImageCard
-                                                    imgSrc={src}
-                                                    onClickEvent={
-                                                        changeFrameOnClick
-                                                    }
-                                                    idx={idx}
-                                                    selected={frame == idx}
-                                                />
-                                            ),
-                                        )}
+                                        {[
+                                            '/romela_frame.png',
+                                            '/frame_red.png',
+                                            '/frame_green.png',
+                                            '/frame_blue.png',
+                                            '/frame_purple.png',
+                                            '/frame_white.png',
+                                            '/frame_black.png',
+                                        ].map((src, idx) => (
+                                            <ImageCard
+                                                imgSrc={src}
+                                                onClickEvent={
+                                                    changeFrameOnClick
+                                                }
+                                                windowHeight={
+                                                    windowSize?.height
+                                                }
+                                                idx={idx}
+                                                selected={frame == idx}
+                                            />
+                                        ))}
                                     </div>
                                 </div>
                             )}

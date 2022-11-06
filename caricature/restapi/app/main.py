@@ -63,7 +63,13 @@ def resize_image_fit_frame(image, target_width):
 
 def make_image_frame(imgs, frame):
 
-    frames = ["./romela_frame.png", "./frame.png"]
+    frames = ['./romela_frame.png',
+                                            './frame_red.png',
+                                            './frame_green.png',
+                                            './frame_blue.png',
+                                            './frame_purple.png',
+                                            './frame_white.png',
+                                            './frame_black.png',]
     background = Image.open(frames[int(frame)])
     w, original_h = background.size
     # w, h = (618, 365)

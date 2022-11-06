@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-const ImageCard = ({ imgSrc, onClickEvent, idx, selected }) => {
+const ImageCard = ({ imgSrc, onClickEvent, idx, selected, windowHeight }) => {
     return (
         <div
             key={idx}
@@ -12,8 +12,8 @@ const ImageCard = ({ imgSrc, onClickEvent, idx, selected }) => {
             <Image
                 className="cursor-pointer transform transition hover:scale-105 duration-300 ease-out"
                 src={imgSrc}
-                height={450}
-                width={(450 / 1722) * 618}
+                height={windowHeight / 2}
+                width={(windowHeight / 2 / 1722) * 618}
             />
         </div>
     );
