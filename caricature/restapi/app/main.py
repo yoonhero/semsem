@@ -61,8 +61,10 @@ def resize_image_fit_frame(image, target_width):
     return image
 
 
-def image_frame(imgs):
-    background = Image.open("./frame.png")
+def make_image_frame(imgs, frame):
+
+    frames = ["./romela_frame.png", "./frame.png"]
+    background = Image.open(frames[int(frame)])
     w, original_h = background.size
     # w, h = (618, 365)
     h = original_h / 4.7
@@ -112,7 +114,7 @@ def predict_for_web():
         results.append(anime_img)   
 
 
-    result_img = image_frame(results)
+    result_img = make_image_frame(results, frame)
 
     timestamp = time.time()
     file_name = f"{int(timestamp*100)}.png"

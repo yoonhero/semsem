@@ -6,9 +6,8 @@ import Loading from '../components/loading';
 import { transform } from '../utils/api';
 import axios from 'axios';
 import ProgressBar from '../components/progress_bar';
-import frame1 from '../public/frame1.png';
-import frame2 from '../public/frame2.png';
 import { ImageCard } from '../components/ImageCard';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function getWindowSize() {
     const { innerWidth, innerHeight } = window;
@@ -28,6 +27,8 @@ export default function Home() {
     const [progress, setProgress] = useState(0);
     const [show, setShow] = useState(false);
     const [frame, setFrame] = useState(0);
+    const [changeFrame, setChangeFrame] = useState(false);
+    // const [waitWebcam, setWaitWebcam] = useState(false);
 
     useEffect(() => {
         setWindowSize(getWindowSize());
@@ -56,6 +57,8 @@ export default function Home() {
                 heigth: webcamRef.current.props.heigth,
             };
             setImageSize(image_info);
+
+            console.log('webcam setting up');
         }
     }, [webcamRef]);
 
@@ -132,7 +135,7 @@ export default function Home() {
         setProgress(0);
     };
 
-    const changeFrame = (idx) => {
+    const changeFrameOnClick = (idx) => {
         setFrame(idx);
     };
 
@@ -160,36 +163,53 @@ export default function Home() {
                             <div className="fixed bottom-10">
                                 <button
                                     onClick={() => capture()}
-                                    className="bg-gray-300 w-20 h-20 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full border-4 border-gray-500"
+                                    className={`w-20 h-20 hover:bg-gray-700 py-2 px-2 rounded-full border-4 border-gray-500 
+                                         bg-gray-300 `}
                                 ></button>
                             </div>
 
                             <div className="fixed  bottom-10 right-10">
-                                <Image
-                                    src={
-                                        'https://cdn-icons-png.flaticon.com/512/3086/3086329.png'
-                                    }
-                                    width={100}
-                                    height={100}
-                                />
+                                {/* <div className="bg-indigo-100 w-12 h-12 hover:bg-indigo-500 p-2 rounded-full">
+                                    <Image
+                                        src={'/frame-icon.png'}
+                                        width={100}
+                                        height={100}
+                                    />
+                                </div> */}
+                                <button
+                                    onClick={() => setChangeFrame(!changeFrame)}
+                                    className="relative inline-block text-lg group"
+                                >
+                                    <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
+                                        <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
+                                        <span className="absolute left-0 w-48 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
+                                        <span className="relative">
+                                            {changeFrame
+                                                ? 'Hide Frames'
+                                                : 'Change Frame'}
+                                        </span>
+                                    </span>
+                                    <span className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0"></span>
+                                </button>
                             </div>
-
-                            {/* <div className="fixed bottom-1">
-                                <div class="w-[100vw] flex flex-row justify-center space-x-3 p-5 -ml-3">
-                                    <ImageCard
-                                        imgSrc={frame1}
-                                        onClickEvent={changeFrame}
-                                        idx={0}
-                                        selected={frame == 0}
-                                    />
-                                    <ImageCard
-                                        imgSrc={frame2}
-                                        onClickEvent={changeFrame}
-                                        idx={1}
-                                        selected={frame == 1}
-                                    />
+                            {changeFrame && (
+                                <div className="fixed bottom-5">
+                                    <div className="flex flex-row justify-center space-x-3 p-5 -ml-3">
+                                        {['/frame1.png', '/frame2.png'].map(
+                                            (src, idx) => (
+                                                <ImageCard
+                                                    imgSrc={src}
+                                                    onClickEvent={
+                                                        changeFrameOnClick
+                                                    }
+                                                    idx={idx}
+                                                    selected={frame == idx}
+                                                />
+                                            ),
+                                        )}
+                                    </div>
                                 </div>
-                            </div> */}
+                            )}
                         </div>
                     ) : (
                         <div className="relative w-full  h-full flex justify-center items-center">
