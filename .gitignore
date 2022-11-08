@@ -169,4 +169,4 @@ cython_debug/
 
 /korean-stable-diffusion/
 
-/caricature/restapi/app/results
+/restapi/app/results
