@@ -7,7 +7,6 @@ import { transform } from '../utils/api';
 import axios from 'axios';
 import ProgressBar from '../components/progress_bar';
 import { ImageCard } from '../components/ImageCard';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function getWindowSize() {
     const { innerWidth, innerHeight } = window;
@@ -88,7 +87,7 @@ export default function Home() {
 
     const createCaricature = () => {
         const data = { images: images, frame: frame };
-        const baseUrl = 'http://127.0.0.1:5000/api/predict';
+        const baseUrl = 'http://127.0.0.1:4000/api/predict';
 
         // -------------------------------TODO ADVANCED TIMER---------------------------------
         // setTimeout(() => {
@@ -137,6 +136,7 @@ export default function Home() {
 
     const changeFrameOnClick = (idx) => {
         setFrame(idx);
+        setChangeFrame(false);
     };
 
     return (
@@ -205,6 +205,7 @@ export default function Home() {
                                             '/frame_black.png',
                                         ].map((src, idx) => (
                                             <ImageCard
+                                                key={idx}
                                                 imgSrc={src}
                                                 onClickEvent={
                                                     changeFrameOnClick

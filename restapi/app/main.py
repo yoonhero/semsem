@@ -4,8 +4,11 @@ import os
 from flask import Flask, request, jsonify, send_file
 from io import BytesIO
 from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 from flask_cors import CORS, cross_origin
 import time
+from datetime import date
 
 from torch_utils import img2anime
 from imgur_uploader import Uploader
@@ -25,6 +28,10 @@ imgur_uploader = Uploader()
 
 def allowed_file(filename):
     return '.' in filename and filename.split(".")[-1].lower() in ALLOWED_EXTENSIONS
+
+def get_today():
+    today = date.today()
+    return today.strftime("%y.%m.%d")
 
 
 def serve_pil_image(pil_img):
@@ -62,15 +69,24 @@ def resize_image_fit_frame(image, target_width):
 
 
 def make_image_frame(imgs, frame):
+    text_pos = {
+        "frame_black":((618/2-30, 1600), (255, 255,255)),
+        "frame_blue":((618/2-30, 1680), (255, 255, 255)),
+        "frame_purple":((618/2-30, 1650), (255, 255, 255)),
+        "frame_white":((618/2-30, 1680), (0, 0, 0)),
+        "frame_green":((618/2-30, 1680), (0, 0, 0)),
+        "frame_red":((618/2-30, 1680), (255, 255, 255))
+    }
 
-    frames = ['./romela_frame.png',
-                                            './frame_red.png',
-                                            './frame_green.png',
-                                            './frame_blue.png',
-                                            './frame_purple.png',
-                                            './frame_white.png',
-                                            './frame_black.png',]
-    background = Image.open(frames[int(frame)])
+    frames = ['./romela_frame.png','./frame_red.png','./frame_green.png','./frame_blue.png','./frame_purple.png','./frame_white.png','./frame_black.png',]
+
+    t_frame = frames[int(frame)]
+
+    if t_frame.split(".")[1][1:] != "romela_frame":
+        pos, rgb_color = text_pos.get(t_frame.split(".")[1][1:])
+
+
+    background = Image.open(t_frame)
     w, original_h = background.size
     # w, h = (618, 365)
     h = original_h / 4.7
@@ -83,6 +99,13 @@ def make_image_frame(imgs, frame):
 
     
     grid.paste(background, (0, 0), background)
+
+    if t_frame.split(".")[1][1:] != "romela_frame":
+        I1 = ImageDraw.Draw(grid)
+
+        myFont = ImageFont.truetype('Woojin_Hyun.ttf', 30)
+        t_text = get_today()
+        I1.text(pos,  t_text, font=myFont,  fill=rgb_color)
 
     return grid
 
@@ -134,7 +157,10 @@ def predict_for_web():
 
     result_img.save(filepath)
 
-    uploaded_link = imgur_uploader.upload(filepath,  f"맬라네컷 {int(timestamp*100)}")    
+    uploaded_link = imgur_uploader.upload(filepath,  f"맬라네컷 {int(timestamp*100)}")  
+    with open("links.txt", "a") as f:
+        f.write(f'{uploaded_link}\n')
+
     qr_img = imgur_uploader.make_qr(uploaded_link)
 
     bytes_img = img_to_base64_str(result_img)
@@ -185,10 +211,10 @@ def predict():
 
         # result_img = image_grid(results, 2, 2)
 
-        result_img = image_frame(results)
+        result_img = make_image_frame(results)
         
         return serve_pil_image(result_img)
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port='5000', debug=True)
+    app.run(host='0.0.0.0', port='4000', debug=True)
