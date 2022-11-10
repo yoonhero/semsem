@@ -6,9 +6,9 @@ from PIL import Image
 from flask_cors import CORS, cross_origin
 import time
 
-from torch_utils import img2anime
-from imgur_uploader import Uploader
-from utils import serve_pil_image, make_image_frame, img_to_base64_str
+from app.torch_utils import img2anime
+from app.imgur_uploader import Uploader
+from app.utils import serve_pil_image, make_image_frame, img_to_base64_str
 
 
 app = Flask(__name__)
@@ -30,24 +30,27 @@ def predict_for_web():
 
     images = params["images"]
     frame = params["frame"]
+    is_ai = params["ai_on"] 
 
     results = []
 
     # TODO Allowed File
 
-    for image in images:
+    for idx, image in enumerate(images):
         try:
             image = image[image.find(",") + 1 :]
             dec = base64.b64decode(image + "===")
             image = Image.open(BytesIO(dec))
 
-            print("Loading success")
+            print(f"Loading success {idx+1}th Image!")
 
-            anime_img = img2anime(image)
+            if bool(int(is_ai)):
+                anime_img = img2anime(image)
+                results.append(anime_img)
+            else:
+                results.append(image)
 
-            print("processing success")
-
-            results.append(anime_img)   
+            print("Processing success!!")
 
         except: return jsonify({"error": "Error when reading Image."})
 

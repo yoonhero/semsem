@@ -7,6 +7,7 @@ import { transform } from '../utils/api';
 import axios from 'axios';
 import ProgressBar from '../components/progress_bar';
 import { ImageCard } from '../components/ImageCard';
+import { CheckBox } from '../components/checkbox';
 
 function getWindowSize() {
     const { innerWidth, innerHeight } = window;
@@ -27,6 +28,7 @@ export default function Home() {
     const [show, setShow] = useState(false);
     const [frame, setFrame] = useState(0);
     const [changeFrame, setChangeFrame] = useState(false);
+    const [useAI, setUseAI] = useState(0);
     // const [waitWebcam, setWaitWebcam] = useState(false);
 
     useEffect(() => {
@@ -86,8 +88,8 @@ export default function Home() {
     };
 
     const createCaricature = () => {
-        const data = { images: images, frame: frame };
-        const baseUrl = 'http://127.0.0.1:4000/api/predict';
+        const data = { images: images, frame: frame, ai_on: useAI ? 1 : 0 };
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
         // -------------------------------TODO ADVANCED TIMER---------------------------------
         // setTimeout(() => {
@@ -139,6 +141,10 @@ export default function Home() {
         setChangeFrame(false);
     };
 
+    const checkboxClick = () => {
+        setUseAI(!useAI);
+    };
+
     return (
         <>
             <Head>
@@ -168,14 +174,15 @@ export default function Home() {
                                 ></button>
                             </div>
 
+                            <div className="fixed z-10 bottom-10 left-10">
+                                <CheckBox
+                                    checked={useAI}
+                                    onClickFunc={checkboxClick}
+                                    text={useAI ? 'AI ON' : 'AI OFF'}
+                                />
+                            </div>
+
                             <div className="fixed z-10  bottom-10 right-10">
-                                {/* <div className="bg-indigo-100 w-12 h-12 hover:bg-indigo-500 p-2 rounded-full">
-                                    <Image
-                                        src={'/frame-icon.png'}
-                                        width={100}
-                                        height={100}
-                                    />
-                                </div> */}
                                 <button
                                     onClick={() => setChangeFrame(!changeFrame)}
                                     className="relative inline-block text-lg group"

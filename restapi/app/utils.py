@@ -58,7 +58,7 @@ def make_image_frame(imgs, frame):
         "frame_red":((618/2-30, 1680), (255, 255, 255))
     }
 
-    frames = ['./romela_frame.png','./frame_red.png','./frame_green.png','./frame_blue.png','./frame_purple.png','./frame_white.png','./frame_black.png',]
+    frames = ['./app/romela_frame.png','./app/frame_red.png','./app/frame_green.png','./app/frame_blue.png','./app/frame_purple.png','./app/frame_white.png','./app/frame_black.png',]
 
     t_frame = frames[int(frame)]
 
@@ -76,10 +76,14 @@ def make_image_frame(imgs, frame):
     
     grid.paste(background, (0, 0), background)
 
-    if t_frame.split(".")[1][1:] == "romela_frame":
+    t_frame_key = t_frame.split(".")[1].split("/")[-1]
+
+    print(t_frame_key)
+
+    if t_frame_key == "romela_frame":
         return grid
 
-    pos, rgb_color = text_pos.get(t_frame.split(".")[1][1:])
+    pos, rgb_color = text_pos.get(t_frame_key)
 
     I1 = ImageDraw.Draw(grid)
 
