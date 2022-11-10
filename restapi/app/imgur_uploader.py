@@ -12,6 +12,9 @@ class Uploader():
 
 		return uploaded_image.link
 
+	def delete(self, links):
+		for link in links: 
+			self.im.delete(link)
 
 	def make_qr(self, link):
 		qr = qrcode.QRCode(

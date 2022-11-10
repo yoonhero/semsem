@@ -64,9 +64,15 @@ export default function Home() {
     }, [webcamRef]);
 
     const capture = useCallback(() => {
-        const imageSrc = webcamRef.current.getScreenshot();
+        try {
+            const imageSrc = webcamRef.current.getScreenshot();
 
-        setImageSrc(imageSrc);
+            // setWaitWebcam(true);
+
+            setImageSrc(imageSrc);
+        } catch (e) {
+            console.log(e);
+        }
     }, [webcamRef]);
 
     /* ------------------------------ SET IMAGE ON CELL---------------------------------- */
@@ -144,6 +150,10 @@ export default function Home() {
     const checkboxClick = () => {
         setUseAI(!useAI);
     };
+
+    // const onUserMedia = () => {
+    //     setWaitWebcam(false);
+    // };
 
     return (
         <>
@@ -267,7 +277,7 @@ export default function Home() {
                             </div>
 
                             <div className="fixed bottom-2">
-                                <p class="animate-bounce text-white text-sm">
+                                <p className="animate-bounce text-white text-sm">
                                     Copyright 2022 © Yoonhero06 with ROMELA
                                 </p>
                             </div>

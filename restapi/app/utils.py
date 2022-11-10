@@ -39,7 +39,7 @@ def resize_image_to_fit_frame(image, target_width):
 
     new_size = (target_width, new_height)
 
-    image = image.resize(new_size, resample=Image.Resampling.NEAREST)
+    image = image.resize(new_size, resample=Image.ANTIALIAS)
 
     crop_area = (0, new_height/2-365/2,618, new_height/2+365/2)
 

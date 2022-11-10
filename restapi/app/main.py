@@ -72,6 +72,7 @@ def predict_for_web():
     uploaded_link = imgur_uploader.upload(filepath,  f"맬라네컷 {int(timestamp*100)}")  
     with open("links.txt", "a") as f:
         f.write(f'{uploaded_link}\n')
+        f.close()
 
     qr_img = imgur_uploader.make_qr(uploaded_link)
 
@@ -91,6 +92,11 @@ def predict_for_web():
         },
     })
 
+# @app.route("/delete", methods=["POST"])
+# def delete_images():
+#     if request.method == "POST":
+#         with open("links.txt", "r") as f:
+#             imgur_uploader.delete([link[:-1] for link in f.readlines()])
 
 @app.route("/predict", methods=["POST"])
 def predict():
