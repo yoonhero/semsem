@@ -1,5 +1,7 @@
 # 멜라네컷 with AI
 
+[![wakatime](https://wakatime.com/badge/user/5f9867f2-894f-4b38-acf8-ebc89cb7f4e6/project/6709b2f0-4264-44df-ae00-6949c97fb3f2.svg)](https://wakatime.com/badge/user/5f9867f2-894f-4b38-acf8-ebc89cb7f4e6/project/6709b2f0-4264-44df-ae00-6949c97fb3f2)
+
 인생네컷 프로그램 made by Yoonhero.
 
 ![web](https://github.com/yoonhero/semsem/blob/master/docs/main_web.png?raw=true)
