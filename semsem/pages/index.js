@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import Script from 'next/script';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import ImageGrid from '../components/image_grid';
 import Loading from '../components/loading';
@@ -8,6 +9,7 @@ import axios from 'axios';
 import ProgressBar from '../components/progress_bar';
 import { ImageCard } from '../components/ImageCard';
 import { CheckBox } from '../components/checkbox';
+import { NaverAnalystics } from '../utils/NaverAnalystics';
 
 function getWindowSize() {
     const { innerWidth, innerHeight } = window;
@@ -160,6 +162,7 @@ export default function Home() {
             <Head>
                 <title>멜라네컷 with AI</title>
             </Head>
+            <NaverAnalystics />
             {loading ? (
                 index != 4 ? (
                     <Loading>Loading...</Loading>
