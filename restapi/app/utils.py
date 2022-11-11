@@ -87,7 +87,7 @@ def make_image_frame(imgs, frame):
 
     I1 = ImageDraw.Draw(grid)
 
-    myFont = ImageFont.truetype('Woojin_Hyun.ttf', 30)
+    myFont = ImageFont.truetype('./app/Woojin_Hyun.ttf', 30)
     t_text = get_today()
     I1.text(pos,  t_text, font=myFont,  fill=rgb_color)
 

@@ -170,3 +170,4 @@ cython_debug/
 /korean-stable-diffusion/
 
 /restapi/app/results
+/restapi/results
