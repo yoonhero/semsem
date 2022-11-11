@@ -144,7 +144,7 @@ export default function Home() {
 
     const changeFrameOnClick = (idx) => {
         setFrame(idx);
-        setChangeFrame(false);
+        // setChangeFrame(false);
     };
 
     const checkboxClick = () => {
@@ -184,7 +184,7 @@ export default function Home() {
                                 ></button>
                             </div>
 
-                            <div className="fixed z-10 bottom-10 left-10">
+                            <div className="fixed z-10 bottom-7 left-7  sm:bottom-10 sm:left-10">
                                 <CheckBox
                                     checked={useAI}
                                     onClickFunc={checkboxClick}
@@ -192,7 +192,7 @@ export default function Home() {
                                 />
                             </div>
 
-                            <div className="fixed z-10  bottom-10 right-10">
+                            <div className="fixed z-10 bottom-5 right-5  sm:bottom-10 sm:right-10">
                                 <button
                                     onClick={() => setChangeFrame(!changeFrame)}
                                     className="relative inline-block text-lg group"
@@ -201,40 +201,73 @@ export default function Home() {
                                         <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
                                         <span className="absolute left-0 w-48 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
                                         <span className="relative">
-                                            {changeFrame
-                                                ? 'Hide Frames'
-                                                : 'Change Frame'}
+                                            {windowSize?.width > 680
+                                                ? changeFrame
+                                                    ? 'Hide Frames'
+                                                    : 'Change Frame'
+                                                : changeFrame
+                                                ? 'Hide'
+                                                : 'Change'}
                                         </span>
                                     </span>
                                     <span className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0"></span>
                                 </button>
                             </div>
                             {changeFrame && (
-                                <div className="fixed bottom-5">
-                                    <div className="flex flex-row justify-center space-x-3 p-5 -ml-3">
-                                        {[
-                                            '/romela_frame.png',
-                                            '/frame_red.png',
-                                            '/frame_green.png',
-                                            '/frame_blue.png',
-                                            '/frame_purple.png',
-                                            '/frame_white.png',
-                                            '/frame_black.png',
-                                        ].map((src, idx) => (
-                                            <ImageCard
-                                                key={idx}
-                                                imgSrc={src}
-                                                onClickEvent={
-                                                    changeFrameOnClick
-                                                }
-                                                windowHeight={
-                                                    windowSize?.height
-                                                }
-                                                idx={idx}
-                                                selected={frame == idx}
-                                            />
-                                        ))}
-                                    </div>
+                                <div className="fixed bottom-0 h-[50vh] md:h-auto sm:bottom-5">
+                                    {windowSize?.width <= 760 ? (
+                                        <div className="pb-[20px] px-[10vw] h-full w-full flex flex-row snap-x overflow-x-auto  self-center scrollbar-hide sm:scrollbar">
+                                            {[
+                                                '/romela_frame.png',
+                                                '/frame_red.png',
+                                                '/frame_green.png',
+                                                '/frame_blue.png',
+                                                '/frame_purple.png',
+                                                '/frame_white.png',
+                                                '/frame_black.png',
+                                            ].map((src, idx) => (
+                                                <div className="flex flex-row relative  flex-shrink-0 p-3  overflow-hidden">
+                                                    <ImageCard
+                                                        key={idx}
+                                                        imgSrc={src}
+                                                        onClickEvent={
+                                                            changeFrameOnClick
+                                                        }
+                                                        windowHeight={
+                                                            windowSize?.height
+                                                        }
+                                                        idx={idx}
+                                                        selected={frame == idx}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="max-w-[90vw] flex flex-row justify-center space-x-3 p-5">
+                                            {[
+                                                '/romela_frame.png',
+                                                '/frame_red.png',
+                                                '/frame_green.png',
+                                                '/frame_blue.png',
+                                                '/frame_purple.png',
+                                                '/frame_white.png',
+                                                '/frame_black.png',
+                                            ].map((src, idx) => (
+                                                <ImageCard
+                                                    key={idx}
+                                                    imgSrc={src}
+                                                    onClickEvent={
+                                                        changeFrameOnClick
+                                                    }
+                                                    windowHeight={
+                                                        windowSize?.height
+                                                    }
+                                                    idx={idx}
+                                                    selected={frame == idx}
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>
