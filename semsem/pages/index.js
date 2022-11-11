@@ -226,7 +226,10 @@ export default function Home() {
                                                 '/frame_white.png',
                                                 '/frame_black.png',
                                             ].map((src, idx) => (
-                                                <div className="flex flex-row relative  flex-shrink-0 p-3  overflow-hidden">
+                                                <div
+                                                    key={idx}
+                                                    className="flex flex-row relative  flex-shrink-0 p-3  overflow-hidden"
+                                                >
                                                     <ImageCard
                                                         key={idx}
                                                         imgSrc={src}
