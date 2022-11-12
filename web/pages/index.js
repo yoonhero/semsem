@@ -27,9 +27,9 @@ export default function Home() {
     const [windowSize, setWindowSize] = useState('');
     const [imageSize, setImageSize] = useState({ width: 600, height: 400 });
     const [createdImage, setCreatedImage] = useState('');
-    const [createdQR, setCreatedQR] = useState('');
+    // const [createdQR, setCreatedQR] = useState('');
     const [progress, setProgress] = useState(0);
-    const [show, setShow] = useState(false);
+    // const [show, setShow] = useState(false);
     const [frame, setFrame] = useState(0);
     const [changeFrame, setChangeFrame] = useState(false);
     const [useAI, setUseAI] = useState(0);
@@ -129,7 +129,7 @@ export default function Home() {
             })
             .then((response) => {
                 setCreatedImage(response.data.body.output);
-                setCreatedQR(response.data.body.qr);
+                //setCreatedQR(response.data.body.qr);
                 setLoading(false);
                 setFinish(true);
             })
@@ -154,9 +154,9 @@ export default function Home() {
         setLoading(false);
         setImages(['', '', '', '']);
         setCreatedImage('');
-        setCreatedQR('');
+        //setCreatedQR('');
         setProgress(0);
-        setShow(false);
+        //setShow(false);
         bgm_toggle();
     };
 
@@ -172,6 +172,31 @@ export default function Home() {
     // const onUserMedia = () => {
     //     setWaitWebcam(false);
     // };
+
+    function base64ToArrayBuffer(base64) {
+        var binaryString = window.atob(base64);
+        var binaryLen = binaryString.length;
+        var bytes = new Uint8Array(binaryLen);
+        for (var i = 0; i < binaryLen; i++) {
+            var ascii = binaryString.charCodeAt(i);
+            bytes[i] = ascii;
+        }
+        return bytes;
+    }
+
+    function saveByteArray(image) {
+        // var blob = new Blob([arraybuffer], { type: 'applicatio//png' });
+
+        var data = image.replace(/^data:image\/\w+;base64,/, '');
+        var buf = new Buffer(data, 'base64');
+
+        var blob = new Blob([buf], { type: 'application/png' });
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        var fileName = '멜라네컷.png';
+        link.download = fileName;
+        link.click();
+    }
 
     return (
         <>
@@ -325,7 +350,7 @@ export default function Home() {
                                     }
                                 />
                             </div>
-                            {show && (
+                            {/* For Production this is for RaspberryPI {show && (
                                 <div className="fixed ">
                                     <Image
                                         src={createdQR}
@@ -333,16 +358,22 @@ export default function Home() {
                                         width={300}
                                     />
                                 </div>
-                            )}
+                            )} */}
 
                             <div className="fixed bottom-10">
-                                <button
+                                {/* This is for the RaspberryPI <button
                                     onClick={() =>
                                         show ? setShow(false) : setShow(true)
                                     }
                                     className="m-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                 >
                                     {!show ? 'Show QR Code' : 'Hide QR Code'}
+                                </button> */}
+                                <button
+                                    onClick={() => saveByteArray(createdImage)}
+                                    className="m-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                >
+                                    Save
                                 </button>
                                 <button
                                     onClick={() => clear()}
