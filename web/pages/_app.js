@@ -1,5 +1,6 @@
 import '../styles/globals.css';
 import { NaverAnalystics } from '../utils/NaverAnalystics';
+import { Analytics } from '@vercel/analytics/react';
 
 function MyApp({ Component, pageProps }) {
     return (
@@ -7,6 +8,7 @@ function MyApp({ Component, pageProps }) {
             <Component {...pageProps} />
 
             <NaverAnalystics />
+            <Analytics />
         </>
     );
 }
