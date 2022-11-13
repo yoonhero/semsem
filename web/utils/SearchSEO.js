@@ -18,7 +18,10 @@ const SearchSEO = () => {
             <meta property="og:title" content="멜라 네컷 with AI" />
             <meta property="og:type" content="website" />
             <meta property="og:url" content="https://semsem.vercel.app" />
-            <meta property="og:image" content="/favicon.ico" />
+            <meta
+                property="og:image"
+                content="https://semsem.vercel.app/favicon.png"
+            />
             <meta property="og:article:author" content="Yoonhero" />
         </>
     );
