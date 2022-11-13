@@ -12,6 +12,7 @@ import { CheckBox } from '../components/checkbox';
 import { NaverAnalystics } from '../utils/NaverAnalystics';
 import { useAudio } from '../utils/use-audio';
 import { CopyRight } from '../components/copyright';
+import { SearchSEO } from '../utils/SearchSEO';
 
 function getWindowSize() {
     const { innerWidth, innerHeight } = window;
@@ -202,8 +203,9 @@ export default function Home() {
         <>
             <Head>
                 <title>멜라네컷 with AI</title>
+                <link rel="icon" href="/favicon.ico" />
+                <SearchSEO />
             </Head>
-            <NaverAnalystics />
 
             {loading ? (
                 index != 4 ? (
