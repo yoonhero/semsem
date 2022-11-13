@@ -11,6 +11,7 @@ import { useAudio } from '../utils/use-audio';
 import { CopyRight } from '../components/copyright';
 import { SearchSEO, SearchEngine } from '../utils/SearchSEO';
 import { DisplayAds } from '../utils/googleAdsense';
+import { GoogleAdsense } from '../utils/googleAdsense';
 
 function getWindowSize() {
     const { innerWidth, innerHeight } = window;
@@ -204,6 +205,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
                 <SearchSEO />
                 <SearchEngine />
+                <GoogleAdsense />
             </Head>
 
             {loading ? (
@@ -359,7 +361,7 @@ export default function Home() {
                                         }
                                     />
 
-                                    {/* <DisplayAds /> */}
+                                    <DisplayAds />
                                 </div>
 
                                 {/* For Production this is for RaspberryPI {show && (

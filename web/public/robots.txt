@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://semsem.vercel.app
+
+# Sitemaps
+Sitemap: https://semsem.vercel.app/sitemap.xml

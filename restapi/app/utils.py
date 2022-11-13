@@ -6,6 +6,7 @@ from PIL import ImageFont
 from datetime import date
 from io import BytesIO
 
+
 # 22.11.9
 def get_today():
     today = date.today()

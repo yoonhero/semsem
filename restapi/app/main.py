@@ -56,29 +56,30 @@ def predict_for_web():
 
     result_img = make_image_frame(results, frame, bool(int(is_ai)))
 
-    timestamp = time.time()
-    file_name = f"{int(timestamp*100)}.png"
+    # timestamp = time.time()
+    # file_name = f"{int(timestamp*100)}.png"
 
-    PATH = "./results"
-    if not os.path.exists(PATH):
-        os.makedirs(PATH)
+    # PATH = "./results"
+    # if not os.path.exists(PATH):
+    #     os.makedirs(PATH)
 
-    filepath = os.path.join(PATH, file_name)
+    # filepath = os.path.join(PATH, file_name)
 
-    result_img.save(filepath)
+    # result_img.save(filepath)
 
-    uploaded_link = imgur_uploader.upload(
-        filepath,  f"맬라네컷 {int(timestamp*100)}")
-    with open("links.txt", "a") as f:
-        f.write(f'{uploaded_link}\n')
-        f.close()
+    # uploaded_link = imgur_uploader.upload(
+    #     filepath,  f"맬라네컷 {int(timestamp*100)}")
+    # with open("links.txt", "a") as f:
+    #     f.write(f'{uploaded_link}\n')
+    #     f.close()
 
-    qr_img = imgur_uploader.make_qr(uploaded_link)
+    # qr_img = imgur_uploader.make_qr(uploaded_link)
 
     bytes_img = img_to_base64_str(result_img)
-    bytes_qr = img_to_base64_str(qr_img)
+    # bytes_qr = img_to_base64_str(qr_img)
 
-    result = {"output": bytes_img, "qr": bytes_qr}
+    # result = {"output": bytes_img, "qr": bytes_qr}
+    result = {"output": bytes_img}
 
     return jsonify({
         "statusCode": 200,
