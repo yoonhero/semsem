@@ -64,7 +64,8 @@ def make_image_frame(imgs, frame):
         "frame_purple": ((618/2-30, 1650), (255, 255, 255)),
         "frame_white": ((618/2-30, 1680), (0, 0, 0)),
         "frame_green": ((618/2-30, 1680), (0, 0, 0)),
-        "frame_red": ((618/2-30, 1680), (255, 255, 255))
+        "frame_red": ((618/2-30, 1680), (255, 255, 255)),
+        "romela_frame": ((618/2-30, 1680), (0, 0, 0))
     }
 
     frames = ['./app/romela_frame.png', './app/frame_red.png', './app/frame_green.png',
@@ -90,8 +91,8 @@ def make_image_frame(imgs, frame):
 
     t_frame_key = t_frame.split(".")[1].split("/")[-1]
 
-    if t_frame_key == "romela_frame":
-        return grid
+    # if t_frame_key == "romela_frame":
+    #    return grid
 
     pos, rgb_color = text_pos.get(t_frame_key)
     myFont = ImageFont.truetype('./app/Woojin_Hyun.ttf', 30)

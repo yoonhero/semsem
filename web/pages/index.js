@@ -233,7 +233,7 @@ export default function Home() {
                 )
             ) : (
                 <>
-                    {finish ? (
+                    {!finish ? (
                         <main className="w-screen h-screen p-0 m-0 bg-black">
                             <div className="relative w-full  h-full flex justify-center align-center">
                                 {waitWebcam && timer != 0 && (
