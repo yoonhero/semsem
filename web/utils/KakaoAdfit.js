@@ -53,7 +53,7 @@ function KakaoAdFit() {
     }, []);
     return (
         <>
-            <aside className="aside__kakaoAdFit flex flex-col gap-2  justify-center items-center"></aside>
+            <aside className="aside__kakaoAdFit flex flex-col gap-2 mb-8  justify-center items-center"></aside>
         </>
     );
 }

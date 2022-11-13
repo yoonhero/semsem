@@ -11,6 +11,7 @@ import { useAudio } from '../utils/use-audio';
 import { CopyRight } from '../components/copyright';
 import { SearchSEO, SearchEngine } from '../utils/SearchSEO';
 import { DisplayAds, KakaoAdFit } from '../utils/KakaoAdfit';
+import { ShareButtons } from '../components/ShareButton';
 
 function getWindowSize() {
     const { innerWidth, innerHeight } = window;
@@ -219,7 +220,7 @@ export default function Home() {
         <>
             <Head>
                 <title>멜라네컷 with AI</title>
-                <link rel="icon" href="/favicon.ico" />
+                <link rel="icon" href="/favicon.png" />
                 <SearchSEO />
                 <SearchEngine />
             </Head>
@@ -232,7 +233,7 @@ export default function Home() {
                 )
             ) : (
                 <>
-                    {!finish ? (
+                    {finish ? (
                         <main className="w-screen h-screen p-0 m-0 bg-black">
                             <div className="relative w-full  h-full flex justify-center align-center">
                                 {waitWebcam && timer != 0 && (
@@ -385,6 +386,9 @@ export default function Home() {
                                     />
 
                                     <KakaoAdFit />
+
+                                    <ShareButtons />
+                                    <div className=" mb-40"></div>
                                 </div>
 
                                 {/* For Production this is for RaspberryPI {show && (
