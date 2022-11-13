@@ -10,8 +10,7 @@ import { CheckBox } from '../components/checkbox';
 import { useAudio } from '../utils/use-audio';
 import { CopyRight } from '../components/copyright';
 import { SearchSEO, SearchEngine } from '../utils/SearchSEO';
-import { DisplayAds } from '../utils/googleAdsense';
-import { GoogleAdsense } from '../utils/googleAdsense';
+import { DisplayAds } from '../utils/KakaoAdfit';
 
 function getWindowSize() {
     const { innerWidth, innerHeight } = window;
@@ -94,7 +93,7 @@ export default function Home() {
             setImageSrc(imageSrc);
 
             setTimer(null);
-            if (windowSize.width <= 640) {
+            if (windowSize?.width <= 640) {
                 setWaitWebcam(false);
             }
         } else if (timer > 0) {
@@ -223,7 +222,6 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
                 <SearchSEO />
                 <SearchEngine />
-                <GoogleAdsense />
             </Head>
 
             {loading ? (
