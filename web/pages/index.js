@@ -94,6 +94,9 @@ export default function Home() {
             setImageSrc(imageSrc);
 
             setTimer(null);
+            if (windowSize.width <= 640) {
+                setWaitWebcam(false);
+            }
         } else if (timer > 0) {
             const timer_interval = setTimeout(() => {
                 setTimer(timer - 1);
