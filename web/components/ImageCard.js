@@ -1,7 +1,6 @@
 import Image from 'next/image';
 
 const ImageCard = ({ imgSrc, onClickEvent, idx, selected, windowHeight }) => {
-    console.log(windowHeight / 2, (windowHeight / 2 / 1722) * 618);
     return (
         <div
             key={idx}

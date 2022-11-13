@@ -37,6 +37,9 @@ export default function Home() {
 
     const [playing, toggle] = useAudio('/camera-click.wav');
     const [bgm_playing, bgm_toggle] = useAudio('/bgm.mp3');
+    const [countdown_playing, countdown_toggle] = useAudio('/countdown.m4a');
+
+    const [timer, setTimer] = useState(null);
 
     useEffect(() => {
         setWindowSize(getWindowSize());
@@ -65,19 +68,14 @@ export default function Home() {
                 heigth: webcamRef.current.props.heigth,
             };
             setImageSize(image_info);
-
-            console.log('webcam setting up');
         }
     }, [webcamRef]);
 
     const capture = useCallback(() => {
         try {
-            const imageSrc = webcamRef.current.getScreenshot();
-            toggle();
-
+            countdown_toggle();
+            setTimer(3);
             setWaitWebcam(true);
-
-            setImageSrc(imageSrc);
         } catch (e) {
             console.log(e);
         }
@@ -88,6 +86,22 @@ export default function Home() {
             setWaitWebcam(false);
         }
     }, [playing]);
+
+    useEffect(() => {
+        if (timer == 0) {
+            const imageSrc = webcamRef.current.getScreenshot();
+            toggle();
+            setImageSrc(imageSrc);
+
+            setTimer(null);
+        } else if (timer > 0) {
+            const timer_interval = setTimeout(() => {
+                setTimer(timer - 1);
+            }, 1000);
+
+            return () => clearInterval(timer_interval);
+        }
+    }, [timer]);
 
     /* ------------------------------ SET IMAGE ON CELL---------------------------------- */
     useEffect(() => {
@@ -149,6 +163,7 @@ export default function Home() {
 
     // Clearing and RESET
     const clear = () => {
+        setTimer(null);
         setIndex(0);
         setFinish(false);
         setLoading(false);
@@ -219,18 +234,25 @@ export default function Home() {
                     {!finish ? (
                         <main className="w-screen h-screen p-0 m-0 bg-black">
                             <div className="relative w-full  h-full flex justify-center align-center">
+                                {waitWebcam && timer != 0 && (
+                                    <div className="z-10 fixed w-full h-full right-0 top-0 flex justify-center items-center">
+                                        <div className="animate-bounce text-6xl md:text-9xl text-white font-bold">
+                                            <p>{timer || '브이!! '}</p>
+                                        </div>
+                                    </div>
+                                )}
                                 <ImageGrid
                                     images={images}
                                     imageSize={imageSize}
                                     windowSize={windowSize}
                                     webcamRef={webcamRef}
                                 />
-                                <div className="fixed bottom-10">
+                                <div className="z-10 fixed bottom-10">
                                     {!waitWebcam ? (
                                         <button
                                             onClick={() => capture()}
                                             disabled={waitWebcam}
-                                            className={`w-20 h-20 hover:bg-gray-700 py-2 px-2 rounded-full border-4 border-gray-500 
+                                            className={` w-20 h-20 hover:bg-gray-700 py-2 px-2 rounded-full border-4 border-gray-500 
                                          bg-gray-300`}
                                         ></button>
                                     ) : (
@@ -253,7 +275,7 @@ export default function Home() {
                                     )}
                                 </div>
 
-                                <div className="fixed z-10 bottom-7 left-7  sm:bottom-10 sm:left-10">
+                                <div className="fixed z-30 bottom-7 left-7  sm:bottom-10 sm:left-10">
                                     <CheckBox
                                         checked={useAI}
                                         onClickFunc={checkboxClick}
@@ -261,7 +283,7 @@ export default function Home() {
                                     />
                                 </div>
 
-                                <div className="fixed z-10 bottom-5 right-5  sm:bottom-10 sm:right-10">
+                                <div className="fixed z-30 bottom-5 right-5  sm:bottom-10 sm:right-10">
                                     <button
                                         onClick={() =>
                                             setChangeFrame(!changeFrame)
@@ -285,7 +307,7 @@ export default function Home() {
                                     </button>
                                 </div>
                                 {changeFrame && (
-                                    <div className="fixed bottom-0 h-[50vh] md:h-auto sm:bottom-5">
+                                    <div className="z-20 fixed bottom-0 h-[50vh] md:h-auto sm:bottom-5">
                                         {windowSize?.width <= 760 ? (
                                             <div className="pb-[20px] px-[10vw] h-full w-full flex flex-row snap-x overflow-x-auto  self-center scrollbar-hide sm:scrollbar">
                                                 {[

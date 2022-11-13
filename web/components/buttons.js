@@ -2,7 +2,7 @@ const CaptureButton = ({ onClickFunc }) => {
     return (
         <button
             onClick={() => onClickFunc()}
-            className={`w-20 h-20 hover:bg-gray-700 py-2 px-2 rounded-full border-4 border-gray-500 
+            className={`z-10 w-20 h-20 hover:bg-gray-700 py-2 px-2 rounded-full border-4 border-gray-500 
                                          bg-gray-300 `}
         ></button>
     );
