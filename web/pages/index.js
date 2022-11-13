@@ -10,8 +10,10 @@ import { CheckBox } from '../components/checkbox';
 import { useAudio } from '../utils/use-audio';
 import { CopyRight } from '../components/copyright';
 import { SearchSEO, SearchEngine } from '../utils/SearchSEO';
-import { DisplayAds, KakaoAdFit } from '../utils/KakaoAdfit';
+import { KakaoAdFit } from '../utils/KakaoAdfit';
 import { ShareButtons } from '../components/ShareButton';
+import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 
 function getWindowSize() {
     const { innerWidth, innerHeight } = window;
@@ -39,7 +41,11 @@ export default function Home() {
     const [bgm_playing, bgm_toggle] = useAudio('/bgm.mp3');
     const [countdown_playing, countdown_toggle] = useAudio('/countdown.m4a');
 
+    const [showLang, setShowLang] = useState(true);
+
     const [timer, setTimer] = useState(null);
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         setWindowSize(getWindowSize());
@@ -50,6 +56,10 @@ export default function Home() {
         function handleWindowResize() {
             setWindowSize(getWindowSize());
         }
+
+        setTimeout(() => {
+            setShowLang(false);
+        }, 1000);
 
         window.addEventListener('resize', handleWindowResize);
 
@@ -219,7 +229,7 @@ export default function Home() {
     return (
         <>
             <Head>
-                <title>멜라네컷 with AI</title>
+                <title>{t('common:title')}</title>
                 <link rel="icon" href="/favicon.png" />
                 <SearchSEO />
                 <SearchEngine />
@@ -227,9 +237,12 @@ export default function Home() {
 
             {loading ? (
                 index != 4 ? (
-                    <Loading>로딩중이랍니다...</Loading>
+                    <Loading>{t('common:loading_msg')}</Loading>
                 ) : (
-                    <ProgressBar progress={progress} />
+                    <ProgressBar
+                        msg={t('common:progress_msg')}
+                        progress={progress}
+                    />
                 )
             ) : (
                 <>
@@ -239,7 +252,7 @@ export default function Home() {
                                 {waitWebcam && timer != 0 && (
                                     <div className="z-10 fixed w-full h-full right-0 top-0 flex justify-center items-center">
                                         <div className="animate-bounce text-6xl md:text-9xl text-white font-bold">
-                                            <p>{timer || '브이!! '}</p>
+                                            <p>{timer || t('common:v')}</p>
                                         </div>
                                     </div>
                                 )}
@@ -308,6 +321,16 @@ export default function Home() {
                                         <span className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0"></span>
                                     </button>
                                 </div>
+                                {t('common:lang') == 'ko' && (
+                                    <div
+                                        className={`fixed z-30 top-5 right-5 text-white text-xl transition transform duration-400 delay-200 transition-opacity opacity-1 ${
+                                            !showLang && 'opacity-0'
+                                        } ease-out`}
+                                    >
+                                        <Link href="/en">ENG</Link>
+                                    </div>
+                                )}
+
                                 {changeFrame && (
                                     <div className="z-20 fixed bottom-0 h-[50vh] md:h-auto sm:bottom-5">
                                         {windowSize?.width <= 760 ? (

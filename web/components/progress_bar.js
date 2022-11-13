@@ -15,7 +15,7 @@ const Quotes = [
     'ㅋ.ㅋ',
 ];
 
-const ProgressBar = ({ progress }) => {
+const ProgressBar = ({ msg, progress }) => {
     const [quote, setQuote] = useState();
 
     const getQuote = () => {
@@ -35,7 +35,7 @@ const ProgressBar = ({ progress }) => {
         <div className="w-screen h-screen p-0 bg-gray-600 ">
             <div className="w-full h-full flex flex-col justify-center items-center  text-center ">
                 <div className="text-white font-bold break-all text-3xl p-10">
-                    여러분의 사진을 멋지게 바꾸는 중이랍니다.
+                    {msg}
                 </div>
 
                 <div className="font-thin text-white break-all text-sm p-4">
