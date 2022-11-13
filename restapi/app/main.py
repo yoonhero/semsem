@@ -1,14 +1,15 @@
 import base64
 import os
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify
 from io import BytesIO
 from PIL import Image
 from flask_cors import CORS, cross_origin
 import time
 
-from app.torch_utils import img2anime
+
 from app.imgur_uploader import Uploader
 from app.utils import serve_pil_image, make_image_frame, img_to_base64_str
+from app.torch_utils import img2anime
 
 
 app = Flask(__name__)
@@ -30,7 +31,7 @@ def predict_for_web():
 
     images = params["images"]
     frame = params["frame"]
-    is_ai = params["ai_on"] 
+    is_ai = params["ai_on"]
 
     results = []
 
@@ -38,24 +39,22 @@ def predict_for_web():
 
     for idx, image in enumerate(images):
         try:
-            image = image[image.find(",") + 1 :]
+            image = image[image.find(",") + 1:]
             dec = base64.b64decode(image + "===")
             image = Image.open(BytesIO(dec))
 
             print(f"Loading success {idx+1}th Image!")
 
             if bool(int(is_ai)):
-                anime_img = img2anime(image)
-                results.append(anime_img)
+                temp = img2anime(image)
+                results.append(temp)
             else:
                 results.append(image)
 
-            print("Processing success!!")
+        except:
+            return jsonify({"error": "Error when reading Image."})
 
-        except: return jsonify({"error": "Error when reading Image."})
-
-
-    result_img = make_image_frame(results, frame)
+    result_img = make_image_frame(results, frame, bool(int(is_ai)))
 
     timestamp = time.time()
     file_name = f"{int(timestamp*100)}.png"
@@ -64,12 +63,12 @@ def predict_for_web():
     if not os.path.exists(PATH):
         os.makedirs(PATH)
 
-    filepath = os.path.join(PATH,file_name)
-
+    filepath = os.path.join(PATH, file_name)
 
     result_img.save(filepath)
 
-    uploaded_link = imgur_uploader.upload(filepath,  f"맬라네컷 {int(timestamp*100)}")  
+    uploaded_link = imgur_uploader.upload(
+        filepath,  f"맬라네컷 {int(timestamp*100)}")
     with open("links.txt", "a") as f:
         f.write(f'{uploaded_link}\n')
         f.close()
@@ -79,9 +78,7 @@ def predict_for_web():
     bytes_img = img_to_base64_str(result_img)
     bytes_qr = img_to_base64_str(qr_img)
 
-
     result = {"output": bytes_img, "qr": bytes_qr}
-
 
     return jsonify({
         "statusCode": 200,
@@ -98,6 +95,7 @@ def predict_for_web():
 #         with open("links.txt", "r") as f:
 #             imgur_uploader.delete([link[:-1] for link in f.readlines()])
 
+
 @app.route("/predict", methods=["POST"])
 def predict():
     if request.method == 'POST':
@@ -110,27 +108,26 @@ def predict():
             if not allowed_file(file.filename):
                 return jsonify({"error": "format not supported"})
 
-            try: 
+            try:
                 img_bytes = file.read()
 
                 image = Image.open(BytesIO(img_bytes))
 
                 print("Loading success")
 
-                anime_img = img2anime(image)
+                # anime_img = img2anime(image)
 
                 print("processing success")
 
-                results.append(anime_img)
+                results.append(image)
 
             except:
-                return jsonify({"error":"error during processing"})
-
+                return jsonify({"error": "error during processing"})
 
         # result_img = image_grid(results, 2, 2)
 
         result_img = make_image_frame(results)
-        
+
         return serve_pil_image(result_img)
 
 

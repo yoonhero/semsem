@@ -9,7 +9,6 @@ function MyApp({ Component, pageProps }) {
             <Component {...pageProps} />
             <GoogleAdsense />
             <NaverAnalystics />
-            <SearchEngine />
         </>
     );
 }
