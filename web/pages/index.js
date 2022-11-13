@@ -10,7 +10,7 @@ import { CheckBox } from '../components/checkbox';
 import { useAudio } from '../utils/use-audio';
 import { CopyRight } from '../components/copyright';
 import { SearchSEO, SearchEngine } from '../utils/SearchSEO';
-import { DisplayAds } from '../utils/KakaoAdfit';
+import { DisplayAds, KakaoAdFit } from '../utils/KakaoAdfit';
 
 function getWindowSize() {
     const { innerWidth, innerHeight } = window;
@@ -374,7 +374,7 @@ export default function Home() {
                     ) : (
                         <main className="w-screen min-h-[100vh] p-0 m-0 bg-black">
                             <div className="relative w-full  h-full flex justify-center ">
-                                <div className="bg-black mt-12  flex flex-col justify-center align-center">
+                                <div className="bg-black mt-12  flex flex-col justify-center gap-5 items-center align-center">
                                     <Image
                                         src={createdImage}
                                         height={windowSize.height - 200}
@@ -384,7 +384,7 @@ export default function Home() {
                                         }
                                     />
 
-                                    <DisplayAds />
+                                    <KakaoAdFit />
                                 </div>
 
                                 {/* For Production this is for RaspberryPI {show && (
