@@ -407,10 +407,28 @@ export default function Home() {
                                             618
                                         }
                                     />
+                                    <div className="flex flex-row">
+                                        <button
+                                            onClick={() =>
+                                                saveByteArray(createdImage)
+                                            }
+                                            className="m-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                        >
+                                            Save
+                                        </button>
+                                        <button
+                                            onClick={() => clear()}
+                                            className="m-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                        >
+                                            Retry
+                                        </button>
+                                    </div>
+
+                                    <ShareButtons />
+                                    <div className=" mb-10 mt-10"></div>
 
                                     <KakaoAdFit />
 
-                                    <ShareButtons />
                                     <div className=" mb-40"></div>
                                 </div>
 
@@ -424,8 +442,8 @@ export default function Home() {
                                 </div>
                             )} */}
 
-                                <div className="fixed bottom-10">
-                                    {/* This is for the RaspberryPI <button
+                                {/* <div className="fixed bottom-10"> */}
+                                {/* This is for the RaspberryPI <button
                                     onClick={() =>
                                         show ? setShow(false) : setShow(true)
                                     }
@@ -433,21 +451,8 @@ export default function Home() {
                                 >
                                     {!show ? 'Show QR Code' : 'Hide QR Code'}
                                 </button> */}
-                                    <button
-                                        onClick={() =>
-                                            saveByteArray(createdImage)
-                                        }
-                                        className="m-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                    >
-                                        Save
-                                    </button>
-                                    <button
-                                        onClick={() => clear()}
-                                        className="m-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                    >
-                                        Retry
-                                    </button>
-                                </div>
+
+                                {/* </div> */}
 
                                 <CopyRight />
                             </div>
