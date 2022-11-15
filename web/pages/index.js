@@ -231,7 +231,7 @@ export default function Home() {
             <Head>
                 <title>{t('common:title')}</title>
                 <link rel="icon" href="/favicon.png" />
-                <SearchSEO />
+                <SearchSEO locale={t('common:lang')} />
                 <SearchEngine />
             </Head>
 
