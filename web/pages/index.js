@@ -104,9 +104,12 @@ export default function Home() {
             setImageSrc(imageSrc);
 
             setTimer(null);
-            if (windowSize?.width <= 640) {
+            // if (windowSize?.width <= 640) {
+            //     setWaitWebcam(false);
+            // }
+            setTimeout(() => {
                 setWaitWebcam(false);
-            }
+            }, 1000);
         } else if (timer > 0) {
             const timer_interval = setTimeout(() => {
                 setTimer(timer - 1);
